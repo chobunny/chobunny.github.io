@@ -8,19 +8,19 @@
 body{
   margin:0;
   overflow:hidden;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to bottom, #0a1430, #1b2a55);
+  font-family:'Segoe UI', sans-serif;
+  background:linear-gradient(to bottom,#0a1430,#1b2a55);
   color:white;
   text-align:center;
 }
 
-/* ARKA PLAN SÜZÜLEN EMOJİLER */
+/* FLOATING ELEMENTS */
 
 .floating{
   position:absolute;
-  font-size:30px;
+  font-size:28px;
   animation: floatUp linear infinite;
-  opacity:0.3;
+  opacity:0.25;
 }
 
 @keyframes floatUp{
@@ -36,6 +36,7 @@ body{
   flex-direction:column;
   position:relative;
   z-index:2;
+  padding:20px;
 }
 
 .active{ display:flex; }
@@ -43,7 +44,7 @@ body{
 button{
   background:#ffb6d9;
   border:none;
-  padding:12px 20px;
+  padding:12px 22px;
   margin:10px;
   border-radius:25px;
   cursor:pointer;
@@ -56,71 +57,103 @@ button:hover{
 }
 
 .rabbit-img{
-  width:220px;
+  width:230px;
   border-radius:20px;
-  box-shadow:0 0 20px rgba(255,182,217,0.6);
+  box-shadow:0 0 25px rgba(255,182,217,0.7);
 }
 
-.grow{
+.choice{
+  font-size:50px;
+  cursor:pointer;
+  margin:15px;
   transition:0.3s;
+}
+
+.choice:hover{
+  transform:scale(1.2);
+}
+
+.letter-box{
+  background:#ffe6f3;
+  color:#0a1430;
+  padding:30px;
+  border-radius:15px;
+  max-width:400px;
+  box-shadow:0 0 25px rgba(255,182,217,0.8);
 }
 </style>
 </head>
 <body>
 
-<!-- SÜZÜLEN EMOJİLER -->
 <script>
-for(let i=0;i<25;i++){
+/* FLOATING EMOJIS */
+for(let i=0;i<35;i++){
   let el=document.createElement("div");
   el.className="floating";
   el.style.left=Math.random()*100+"vw";
-  el.style.animationDuration=(5+Math.random()*10)+"s";
-  el.innerText=Math.random()>0.5?"🐰":"🥕";
+  el.style.animationDuration=(6+Math.random()*10)+"s";
+  let items=["🐰","🥕","💗"];
+  el.innerText=items[Math.floor(Math.random()*items.length)];
   document.body.appendChild(el);
 }
 </script>
 
+<!-- START -->
 <div id="start" class="screen active">
   <h1>Luigi havucunu kaybetti...</h1>
-  <button onclick="next('luigi')">Luigi’ye git 🐰</button>
+  <button onclick="next('search')">Luigi’ye yardım et 🐰</button>
 </div>
 
-<div id="luigi" class="screen">
-  <img class="rabbit-img" src="https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?q=80&w=800&auto=format&fit=crop" alt="rabbit">
-  <p>Ben Luigi... Havucumu buldum galiba.</p>
-  <button onclick="next('search')">Havucu ver 🥕</button>
-  <button id="eatBtn" class="grow" onclick="growBtn()">Ben yicem</button>
-  <p id="reaction"></p>
-</div>
-
+<!-- SEARCH -->
 <div id="search" class="screen">
-  <h2>Havuç bulundu 🥕</h2>
-  <p>Devamı sonra eklenecek...</p>
+  <h2>Havucu seç 🥕</h2>
+  <div>
+    <span class="choice" onclick="wrong()">🌟</span>
+    <span class="choice" onclick="wrong()">🍄</span>
+    <span class="choice" onclick="correct()">🥕</span>
+  </div>
+</div>
+
+<!-- WRONG PAGE -->
+<div id="sad" class="screen">
+  <img class="rabbit-img" src="https://images.unsplash.com/photo-1595433707802-8e64c8c6e89b?q=80&w=800&auto=format&fit=crop">
+  <h2>Artık Luigi'yi üzdün.</h2>
+  <button onclick="next('search')">Tekrar dene</button>
+</div>
+
+<!-- CORRECT PAGE -->
+<div id="happy" class="screen">
+  <img class="rabbit-img" src="https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?q=80&w=800&auto=format&fit=crop">
+  <h2>Luigi çok mutlu! 💗</h2>
+  <button onclick="next('letter')">Luigi'nin mektubunu aç 💌</button>
+</div>
+
+<!-- LETTER PAGE -->
+<div id="letter" class="screen">
+  <img class="rabbit-img" src="https://images.unsplash.com/photo-1521747116042-5a810fda9664?q=80&w=800&auto=format&fit=crop">
+  
+  <div class="letter-box">
+    <h2>💌</h2>
+    <p>
+      BURAYA MEKTUP YAZINI YAZACAKSIN.<br><br>
+      (Metni buraya ekle.)
+    </p>
+  </div>
 </div>
 
 <script>
-
 function next(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
-/* BÜYÜYEN BUTON */
-
-let scale=1;
-let clicks=0;
-let reactions=["yuh","dana","daha ne kadar yicen","ayıp değil mi","YEME BE"];
-
-function growBtn(){
-  scale+=0.3;
-  document.getElementById("eatBtn").style.transform="scale("+scale+")";
-  
-  if(clicks < reactions.length){
-    document.getElementById("reaction").innerText=reactions[clicks];
-    clicks++;
-  }
+function wrong(){
+  next('sad');
 }
 
+function correct(){
+  next('happy');
+}
 </script>
 
 </body>
