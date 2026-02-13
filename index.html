@@ -14,8 +14,7 @@ body{
   text-align:center;
 }
 
-/* FLOATING ELEMENTS */
-
+/* FLOATING EMOJIS */
 .floating{
   position:absolute;
   font-size:28px;
@@ -85,8 +84,13 @@ button:hover{
 </head>
 <body>
 
+<!-- Minecraft Music -->
+<audio autoplay loop>
+  <source src="minecraft.mp3" type="audio/mpeg">
+</audio>
+
 <script>
-/* FLOATING EMOJIS */
+/* FLOATING ELEMENTS */
 for(let i=0;i<35;i++){
   let el=document.createElement("div");
   el.className="floating";
@@ -101,14 +105,15 @@ for(let i=0;i<35;i++){
 <!-- START -->
 <div id="start" class="screen active">
   <h1>Luigi havucunu kaybetti...</h1>
-  <button onclick="next('search')">Luigi’ye yardım et 🐰</button>
+  <button onclick="next('luigi')">Luigi’ye git 🐰</button>
 </div>
-  
-  <div id="luigi" class="screen">
-  <img class="rabbit-img" src="https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?q=80&w=800&auto=format&fit=crop" alt="rabbit">
+
+<!-- LUIGI SCREEN -->
+<div id="luigi" class="screen">
+  <img class="rabbit-img" src="rabbit1.jpg">
   <p>Ben Luigi... Havucumu buldum galiba.</p>
   <button onclick="next('search')">Havucu ver 🥕</button>
-  <button id="eatBtn" class="grow" onclick="growBtn()">Ben yicem</button>
+  <button id="eatBtn" onclick="growBtn()">Ben yicem</button>
   <p id="reaction"></p>
 </div>
 
@@ -122,29 +127,27 @@ for(let i=0;i<35;i++){
   </div>
 </div>
 
-<!-- WRONG PAGE -->
+<!-- SAD -->
 <div id="sad" class="screen">
-  <img class="rabbit-img" src="https://images.unsplash.com/photo-1595433707802-8e64c8c6e89b?q=80&w=800&auto=format&fit=crop">
+  <img class="rabbit-img" src="rabbit_sad.jpg">
   <h2>Artık Luigi'yi üzdün.</h2>
   <button onclick="next('search')">Tekrar dene</button>
 </div>
 
-<!-- CORRECT PAGE -->
+<!-- HAPPY -->
 <div id="happy" class="screen">
-  <img class="rabbit-img" src="https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?q=80&w=800&auto=format&fit=crop">
+  <img class="rabbit-img" src="rabbit_happy.jpg">
   <h2>Luigi çok mutlu! 💗</h2>
   <button onclick="next('letter')">Luigi'nin mektubunu aç 💌</button>
 </div>
 
-<!-- LETTER PAGE -->
+<!-- LETTER -->
 <div id="letter" class="screen">
-  <img class="rabbit-img" src="https://images.unsplash.com/photo-1521747116042-5a810fda9664?q=80&w=800&auto=format&fit=crop">
-  
+  <img class="rabbit-img" src="rabbit_letter.jpg">
   <div class="letter-box">
     <h2>💌</h2>
     <p>
-      BURAYA MEKTUP YAZINI YAZACAKSIN.<br><br>
-      (Metni buraya ekle.)
+      BURAYA MEKTUBU YAZACAKSIN.
     </p>
   </div>
 </div>
@@ -153,6 +156,21 @@ for(let i=0;i<35;i++){
 function next(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+}
+
+/* BÜYÜYEN BUTON */
+let scale=1;
+let clicks=0;
+let reactions=["yuh","dana","daha ne kadar yicen","ayıp değil mi","YEME BE"];
+
+function growBtn(){
+  scale+=0.3;
+  document.getElementById("eatBtn").style.transform="scale("+scale+")";
+  
+  if(clicks < reactions.length){
+    document.getElementById("reaction").innerText=reactions[clicks];
+    clicks++;
+  }
 }
 
 function wrong(){
